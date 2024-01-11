@@ -9,6 +9,7 @@
 # carpeta que el notebook valuacion_instrumentos_derivados.ipynb.
  
 
+from math import e
 from matplotlib import pyplot as plt
 import networkx
 import numpy
@@ -297,7 +298,10 @@ def plot_prices_tree(
         node_alpha = 0.1
         option_type = ""
     elif asset == "opción":
-        symb = "P"
+        if option_type == "call":
+            symb = "C"
+        elif option_type == "put":
+            symb = "P"
         node_color = "#00d084"
         node_alpha = 0.4
         if option_type not in ["call", "put"]:
@@ -398,7 +402,7 @@ def plot_prices_tree(
     if asset == "subyacente":
         title = (
             f"Árbol de precios del activo subyacente ${symb}$ \n\n con: "
-            ", ".join(
+            + ", ".join(
                 [f"${k}$ = {round(v, 3)}" for k, v in params_dict.items()]
                 )
         )
