@@ -111,7 +111,15 @@ def graficar_trayectorias(
         ax1.plot(time, S[i, :], alpha=0.5)
 
     # Se grafica el strike.
-    K = payoffs_dict["params"]["K"]
+    try:
+        # Strike fijo
+        K = payoffs_dict["params"]["K"]
+        strike_label = r"Strike $K$ " + f" = ${K:.2f}"
+    except KeyError:
+        # Strike flotante
+        K = numpy.mean(S[:, -1])
+        strike_label = r"Strike flotante $\bar{S}(T)$ " + f"= ${K:.2f}"
+        
     ax1.hlines(
         K,
         xmin=0,
@@ -119,8 +127,9 @@ def graficar_trayectorias(
         linestyles="dashed",
         color="blue",
         linewidth=3.5,
-        label="Strike K = ${:.2f}".format(K),
+        label=strike_label,
     )
+        
 
     # ---------------------------------------------------------------------
     # Gráficas de la evolución temporal de la prima y el valor esperado del
